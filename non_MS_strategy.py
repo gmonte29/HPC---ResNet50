@@ -17,8 +17,6 @@ new_input_shape = (32, 32, 3)
 x_train_resized = tf.image.resize(x_train, new_input_shape[:2])
 x_test_resized = tf.image.resize(x_test, new_input_shape[:2])
 
-tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir="./logs", update_freq=1, profile_batch=(1,128),histogram_freq=1)
-
 # Create the ResNet50 model
 model = tf.keras.applications.ResNet50(
         include_top=True,
@@ -31,4 +29,4 @@ loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False)
 model.compile(optimizer="adam", loss=loss_fn, metrics=["accuracy"])
 
 # Train the model, change batch_size as desired
-model.fit(x_train_resized, y_train, epochs=1, batch_size=128, callbacks=[tensorboard_callback])
+model.fit(x_train_resized, y_train, epochs=1, batch_size=128)
