@@ -8,7 +8,7 @@ print(num_gpus)
 cifar = tf.keras.datasets.cifar100
 
 # Enter input shape into model, will resize the cifar100 input shape
-new_input_shape = (128, 128, 3)
+new_input_shape = (32, 32, 3)
 
 # Load CIFAR-100 data
 (x_train, y_train), (x_test, y_test) = cifar.load_data()
@@ -17,6 +17,7 @@ new_input_shape = (128, 128, 3)
 x_train_resized = tf.image.resize(x_train, new_input_shape[:2])
 x_test_resized = tf.image.resize(x_test, new_input_shape[:2])
 
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir="./logs", update_freq=1, profile_batch=(1,128),histogram_freq=1)
 
 # Create the ResNet50 model
 model = tf.keras.applications.ResNet50(
@@ -30,4 +31,4 @@ loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False)
 model.compile(optimizer="adam", loss=loss_fn, metrics=["accuracy"])
 
 # Train the model, change batch_size as desired
-model.fit(x_train_resized, y_train, epochs=1, batch_size=128)
+model.fit(x_train_resized, y_train, epochs=1, batch_size=128, callbacks=[tensorboard_callback])
